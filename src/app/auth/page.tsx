@@ -1,5 +1,14 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    setPersistence,
+    inMemoryPersistence,
+    browserSessionPersistence,
+} from "firebase/auth";
+import userAuth from "@/utils/userAuth";
 
 const UserPage: React.FC = () => {
     const [isSignIn, setIsSignIn] = useState(true);
@@ -8,24 +17,56 @@ const UserPage: React.FC = () => {
     const [signUpEmail, setSignUpEmail] = useState("");
     const [signUpPassword, setSignUpPassword] = useState("");
 
-    const handleSignIn = (e: React.FormEvent) => {
+    const router = useRouter();
+
+    const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle sign-in logic here
         console.log(signInEmail);
         console.log(signInPassword);
 
-        setSignInEmail("");
-        setSignInPassword("");
+        try {
+            await setPersistence(userAuth, browserSessionPersistence);
+
+            await signInWithEmailAndPassword(
+                userAuth,
+                signInEmail,
+                signInPassword
+            );
+
+            setSignInEmail("");
+            setSignInPassword("");
+
+            alert("Signed in successfully! Please click OK to continue.");
+
+            router.push("/form");
+        } catch (err) {
+            console.error("Error signing in: ", err);
+        }
     };
 
-    const handleSignUp = (e: React.FormEvent) => {
+    const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle sign-up logic here
         console.log(signUpEmail);
         console.log(signUpPassword);
 
-        setSignUpEmail("");
-        setSignUpPassword("");
+        try {
+            await setPersistence(userAuth, inMemoryPersistence);
+
+            await createUserWithEmailAndPassword(
+                userAuth,
+                signUpEmail,
+                signUpPassword
+            );
+
+            setSignUpEmail("");
+            setSignUpPassword("");
+
+            alert("Signed up successfully! Please sign in to continue.");
+
+            router.refresh();
+        } catch (err) {
+            console.error("Error signing up: ", err);
+        }
     };
 
     return (

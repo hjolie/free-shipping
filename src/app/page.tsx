@@ -3,14 +3,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const LandingPage: React.FC = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        // Loading Animation
-        const timer = setTimeout(() => setLoading(false), 2000);
-        return () => clearTimeout(timer);
-    }, []);
+    // useEffect(() => {
+    //     // Loading Animation
+    //     const timer = setTimeout(() => setLoading(false), 2000);
+    //     return () => clearTimeout(timer);
+    // }, []);
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-gray-200">

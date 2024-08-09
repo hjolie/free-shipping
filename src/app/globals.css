@@ -31,3 +31,7 @@ body {
 #group-buy-submit-btn {
     margin-top: 40px;
 }
+#header-signin-btn,
+#header-signout-btn {
+    margin-left: 30px;
+}
