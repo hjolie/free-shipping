@@ -28,7 +28,8 @@ body {
     animation: spin 1s linear infinite;
 }
 
-#group-buy-submit-btn {
+#group-buy-submit-btn,
+#group-buy-edit-btn {
     margin-top: 40px;
 }
 #header-signin-btn,

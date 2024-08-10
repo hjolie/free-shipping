@@ -2,15 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/AuthStateCheck";
-import {
-    collection,
-    addDoc,
-    getDocs,
-    deleteDoc,
-    doc,
-    query,
-    where,
-} from "firebase/firestore/lite";
+import { collection, addDoc } from "firebase/firestore/lite";
 import db from "@/utils/db";
 
 interface GroupBuyFormType {
@@ -25,62 +17,87 @@ interface GroupBuyFormType {
     otherInfo: string;
 }
 
-const GroupBuyForm: React.FC = () => {
-    const [formData, setFormData] = useState<GroupBuyFormType>({
-        brand: "",
-        product: "",
-        price: 0,
-        url: "",
-        threshold: 0,
-        currentTotal: 0,
-        difference: 0,
-        closingDate: "",
-        otherInfo: "",
-    });
+const initialFormData: GroupBuyFormType = {
+    brand: "",
+    product: "",
+    price: 0,
+    url: "",
+    threshold: 0,
+    currentTotal: 0,
+    difference: 0,
+    closingDate: "",
+    otherInfo: "",
+};
 
-    const { uid, email } = useAuth();
+const GroupBuyForm: React.FC = () => {
+    const [formData, setFormData] = useState<GroupBuyFormType>(initialFormData);
+
+    const { uid } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
         console.log("UID from Form: ", uid);
         if (!uid) {
-            router.replace("/");
+            alert("需登入方可開團");
+            router.replace("/auth");
         }
-    }, [uid, router]);
+    }, [uid]);
 
     if (!uid) {
         return null;
     }
 
-    // const createForm = async (newFormData: GroupBuyFormType) => {
-    //     try {
-    //         await addDoc(collection(db, "forms"), {
-    //             ...newFormData,
-    //             uid: uid,
-    //         });
-    //     } catch (err) {
-    //         console.error("Error adding new form to DB: ", err);
-    //     }
-    // };
+    const createForm = async (
+        newFormData: GroupBuyFormType
+    ): Promise<string | null> => {
+        try {
+            const newDoc = await addDoc(collection(db, "forms"), {
+                ...newFormData,
+                uid: uid,
+            });
+
+            return newDoc.id;
+        } catch (err) {
+            console.error("Error adding new form to DB: ", err);
+            return null;
+        }
+    };
 
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // const newDoc = await createForm(formData);
+        console.log(formData);
 
-        // console.log(newDoc.id);
-        console.log(formData.product);
-        console.log(formData.price);
-        // router.push("/detail");
+        const docId = await createForm(formData);
+
+        if (docId) {
+            console.log(docId);
+            alert("successfully adding new form to DB.");
+            setFormData(initialFormData);
+            router.replace(`/detail/${docId}`);
+        } else {
+            console.error("Failed to retrieve the docId");
+        }
     };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const { name, value } = e.target;
+
+        let newValue: string | number = value;
+
+        if (
+            name === "price" ||
+            name === "threshold" ||
+            name === "currentTotal" ||
+            name === "difference"
+        ) {
+            newValue = value === "" ? "" : parseInt(value);
+        }
         setFormData((prevFormData) => ({
             ...prevFormData,
-            [name]: value,
+            [name]: newValue,
         }));
     };
 

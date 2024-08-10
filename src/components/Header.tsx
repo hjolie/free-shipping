@@ -31,33 +31,35 @@ const Header: FC = React.memo(() => {
                 <div className="flex space-x-4">
                     <Link
                         href="/"
-                        className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
+                        className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 pt-1 ${
                             pathname === "/" ? "text-teal-300 font-bold" : ""
                         }`}
                     >
                         HOME
                     </Link>
                     <Link
-                        href="/auth"
-                        className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
-                            pathname === "/auth"
-                                ? "text-teal-300 font-bold"
-                                : ""
-                        }`}
-                    >
-                        會員中心
-                    </Link>
-                    <Link
                         href="/form"
-                        className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
+                        className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 pt-1 ${
                             pathname === "/form"
                                 ? "text-teal-300 font-bold"
                                 : ""
                         }`}
                     >
-                        FORM
+                        開團
                     </Link>
-                    <Link
+                    <button
+                        onClick={() => alert("會員中心施工中")}
+                        className="text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300"
+                        // href="/auth"
+                        // className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
+                        //     pathname === "/auth"
+                        //         ? "text-teal-300 font-bold"
+                        //         : ""
+                        // }`}
+                    >
+                        會員中心
+                    </button>
+                    {/* <Link
                         href="/detail"
                         className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
                             pathname === "/detail"
@@ -66,7 +68,7 @@ const Header: FC = React.memo(() => {
                         }`}
                     >
                         DETAIL
-                    </Link>
+                    </Link> */}
 
                     {!uid ? (
                         <button

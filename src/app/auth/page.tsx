@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
     createUserWithEmailAndPassword,
@@ -9,6 +9,7 @@ import {
     browserSessionPersistence,
 } from "firebase/auth";
 import userAuth from "@/utils/userAuth";
+import { useAuth } from "@/components/AuthStateCheck";
 
 const UserPage: React.FC = () => {
     const [isSignIn, setIsSignIn] = useState(true);
@@ -18,6 +19,15 @@ const UserPage: React.FC = () => {
     const [signUpPassword, setSignUpPassword] = useState("");
 
     const router = useRouter();
+
+    const { uid } = useAuth();
+
+    useEffect(() => {
+        console.log("UID from Auth: ", uid);
+        if (uid) {
+            router.push("/form");
+        }
+    }, [uid]);
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -63,7 +73,7 @@ const UserPage: React.FC = () => {
 
             alert("Signed up successfully! Please sign in to continue.");
 
-            router.refresh();
+            window.location.reload();
         } catch (err) {
             console.error("Error signing up: ", err);
         }

@@ -1,4 +1,3 @@
-import AuthStateCheck from "@/components/AuthStateCheck";
 import GroupBuyForm from "@/components/GroupBuyForm";
 
 const GroupBuyFormPage = () => {
