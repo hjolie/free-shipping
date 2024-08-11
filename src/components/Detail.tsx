@@ -12,7 +12,7 @@ const Detail = () => {
 
     useEffect(() => {
         // Loading Animation
-        const timer = setTimeout(() => setLoading(false), 2000);
+        const timer = setTimeout(() => setLoading(false), 3000);
         return () => clearTimeout(timer);
     }, []);
 
@@ -30,7 +30,7 @@ const Detail = () => {
                         alert(`Can't find data with id: ${id}`);
                         router.replace("/");
                     }
-                    console.log(id);
+                    // console.log(id);
                 } catch (error) {
                     console.error("Error fetching doc: ", error);
                     alert(`Error fetching doc: ${error}`);
@@ -44,7 +44,7 @@ const Detail = () => {
 
     if (!data) return <p>Data not found</p>;
 
-    console.log(data);
+    // console.log(data);
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center p-4 mt-36 mb-12">
@@ -57,8 +57,8 @@ const Detail = () => {
                 </div>
             ) : (
                 <div className="w-full max-w-2xl bg-gray-800 rounded-lg shadow-lg p-8">
-                    <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center">
-                        團購單
+                    <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center tracking-wider">
+                        團購資訊
                     </h1>
 
                     <div className="space-y-6">

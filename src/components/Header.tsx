@@ -10,7 +10,7 @@ const Header: FC = React.memo(() => {
     const pathname = usePathname();
     const router = useRouter();
     const { uid } = useAuth();
-    console.log("UID from Header: ", uid);
+    // console.log("UID from Header: ", uid);
 
     const handleSignOut = async () => {
         try {
@@ -25,8 +25,8 @@ const Header: FC = React.memo(() => {
     return (
         <nav className="navbar p-4 bg-dark-ocean text-gray-light fixed top-0 left-0 right-0 shadow-md z-50">
             <div className="container px-12 py-3 mx-auto flex justify-between items-center max-w-1200">
-                <h1 className="text-3xl font-bold text-teal-300 tracking-widest">
-                    免運樂
+                <h1 className="text-3xl font-bold text-teal-300 tracking-wider">
+                    免運GO
                 </h1>
                 <div className="flex space-x-4">
                     <Link
@@ -35,7 +35,7 @@ const Header: FC = React.memo(() => {
                             pathname === "/" ? "text-teal-300 font-bold" : ""
                         }`}
                     >
-                        HOME
+                        首頁
                     </Link>
                     <Link
                         href="/form"

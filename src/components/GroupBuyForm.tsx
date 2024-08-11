@@ -36,9 +36,9 @@ const GroupBuyForm: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        console.log("UID from Form: ", uid);
+        // console.log("UID from Form: ", uid);
         if (!uid) {
-            alert("需登入方可開團");
+            alert("請先登入，登入後即可開團");
             router.replace("/auth");
         }
     }, [uid]);
@@ -66,12 +66,12 @@ const GroupBuyForm: React.FC = () => {
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log(formData);
+        // console.log(formData);
 
         const docId = await createForm(formData);
 
         if (docId) {
-            console.log(docId);
+            // console.log(docId);
             alert("successfully adding new form to DB.");
             setFormData(initialFormData);
             router.replace(`/detail/${docId}`);
@@ -104,7 +104,7 @@ const GroupBuyForm: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center p-4 mt-36 mb-12">
             <div className="w-full max-w-lg bg-gray-800 rounded-lg shadow-lg p-8">
-                <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center">
+                <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center tracking-wide">
                     建立親友團購單
                 </h1>
                 <form className="space-y-6" onSubmit={handleFormSubmit}>
@@ -122,6 +122,7 @@ const GroupBuyForm: React.FC = () => {
                             value={formData.brand}
                             onChange={handleChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            required
                         />
                     </div>
                     <div>
@@ -138,6 +139,7 @@ const GroupBuyForm: React.FC = () => {
                             value={formData.product}
                             onChange={handleChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            required
                         />
                     </div>
                     <div>
@@ -154,6 +156,7 @@ const GroupBuyForm: React.FC = () => {
                             value={formData.price}
                             onChange={handleChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            required
                         />
                     </div>
                     <div>
@@ -187,6 +190,7 @@ const GroupBuyForm: React.FC = () => {
                             value={formData.threshold}
                             onChange={handleChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            required
                         />
                     </div>
                     <div>
@@ -203,6 +207,7 @@ const GroupBuyForm: React.FC = () => {
                             value={formData.currentTotal}
                             onChange={handleChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            required
                         />
                     </div>
                     <div>
@@ -219,6 +224,7 @@ const GroupBuyForm: React.FC = () => {
                             value={formData.difference}
                             onChange={handleChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            required
                         />
                     </div>
                     <div>
@@ -235,6 +241,7 @@ const GroupBuyForm: React.FC = () => {
                             value={formData.closingDate}
                             onChange={handleChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            required
                         />
                     </div>
                     <div>

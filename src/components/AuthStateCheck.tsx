@@ -15,7 +15,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [email, setEmail] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log("Running from AuthStateCheck");
+        // console.log("Running from AuthStateCheck");
         const unsubscribe = onAuthStateChanged(userAuth, (user) => {
             if (user) {
                 setUid(user.uid);

@@ -23,7 +23,7 @@ const UserPage: React.FC = () => {
     const { uid } = useAuth();
 
     useEffect(() => {
-        console.log("UID from Auth: ", uid);
+        // console.log("UID from Auth: ", uid);
         if (uid) {
             router.push("/form");
         }
@@ -31,8 +31,8 @@ const UserPage: React.FC = () => {
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(signInEmail);
-        console.log(signInPassword);
+        // console.log(signInEmail);
+        // console.log(signInPassword);
 
         try {
             await setPersistence(userAuth, browserSessionPersistence);
@@ -56,8 +56,8 @@ const UserPage: React.FC = () => {
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(signUpEmail);
-        console.log(signUpPassword);
+        // console.log(signUpEmail);
+        // console.log(signUpPassword);
 
         try {
             await setPersistence(userAuth, inMemoryPersistence);
