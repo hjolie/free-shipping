@@ -11,7 +11,7 @@ const notoSansTC = Noto_Sans_TC({
 });
 
 export const metadata: Metadata = {
-    title: "免運樂",
+    title: "免運GO｜免運購",
     description: "揪親友 湊免運",
 };
 

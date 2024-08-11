@@ -50,7 +50,12 @@ const UserPage: React.FC = () => {
 
             router.push("/form");
         } catch (err) {
+            alert(
+                "Failed to sign in due to incorrect email or password, please try again."
+            );
             console.error("Error signing in: ", err);
+            setSignInEmail("");
+            setSignInPassword("");
         }
     };
 
@@ -75,7 +80,12 @@ const UserPage: React.FC = () => {
 
             window.location.reload();
         } catch (err) {
+            alert(
+                "This email has been used, please sign in or try with a different email ."
+            );
             console.error("Error signing up: ", err);
+            setSignUpEmail("");
+            setSignUpPassword("");
         }
     };
 
