@@ -29,7 +29,8 @@ body {
 }
 
 #group-buy-submit-btn,
-#group-buy-join-btn {
+#group-buy-join-btn,
+#user-form-edit-btn {
     margin-top: 40px;
 }
 #header-signin-btn,

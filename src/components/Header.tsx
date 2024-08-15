@@ -47,51 +47,28 @@ const Header: FC = React.memo(() => {
                     >
                         開團
                     </Link>
-                    <button
-                        onClick={() => alert("會員中心施工中")}
-                        className="text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300"
-                        // href="/auth"
-                        // className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
-                        //     pathname === "/auth"
-                        //         ? "text-teal-300 font-bold"
-                        //         : ""
-                        // }`}
-                    >
-                        會員中心
-                    </button>
-                    {/* <Link
-                        href="/detail"
-                        className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
-                            pathname === "/detail"
+                    <Link
+                        href="/user"
+                        className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 pt-1 ${
+                            pathname === "/user"
                                 ? "text-teal-300 font-bold"
                                 : ""
                         }`}
                     >
-                        DETAIL
-                    </Link> */}
+                        會員中心
+                    </Link>
 
                     {!uid ? (
                         <button
-                            onClick={() => router.push("/auth")}
+                            onClick={() => router.push("/user/auth")}
                             className="bg-teal-600 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
                             id="header-signin-btn"
                         >
                             登入
                         </button>
                     ) : (
-                        // <Link
-                        //     href="/auth"
-                        //     className={`text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300 ${
-                        //         pathname === "/auth"
-                        //             ? "text-teal-300 font-bold"
-                        //             : ""
-                        //     }`}
-                        // >
-                        //     登入
-                        // </Link>
                         <button
                             onClick={handleSignOut}
-                            // className="text-xl hover:text-teal-300 hover:font-bold transition-colors duration-300"
                             className="bg-teal-600 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
                             id="header-signout-btn"
                         >

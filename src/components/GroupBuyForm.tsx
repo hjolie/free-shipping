@@ -38,8 +38,7 @@ const GroupBuyForm: React.FC = () => {
     useEffect(() => {
         // console.log("UID from Form: ", uid);
         if (!uid) {
-            alert("請先登入，登入後即可開團");
-            router.replace("/auth");
+            router.replace("/user/auth");
         }
     }, [uid]);
 
@@ -74,7 +73,7 @@ const GroupBuyForm: React.FC = () => {
             // console.log(docId);
             alert("successfully adding new form to DB.");
             setFormData(initialFormData);
-            router.replace(`/detail/${docId}`);
+            router.replace(`/form/detail/${docId}`);
         } else {
             console.error("Failed to retrieve the docId");
         }

@@ -15,13 +15,13 @@ const LandingPage: React.FC = () => {
                         揪親友 湊免運
                     </h1>
                     <p className="text-xl text-gray-300 mb-6">
-                        - 建立親友/同事團購單
+                        ·建立親友/同事團購單
                     </p>
                     <p className="text-xl text-gray-300 mb-6">
-                        - 湊免運 或 達低消
+                        ·同湊免運或店家低消
                     </p>
                     <p className="text-xl text-gray-300 mb-10">
-                        - 快速開團、方便登記
+                        ·快速開團、方便登記
                     </p>
                     <button
                         onClick={() => router.push("/auth")}
