@@ -10,7 +10,6 @@ const Header: FC = React.memo(() => {
     const pathname = usePathname();
     const router = useRouter();
     const { uid } = useAuth();
-    // console.log("UID from Header: ", uid);
 
     const handleSignOut = async () => {
         try {

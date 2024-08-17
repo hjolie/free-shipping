@@ -24,7 +24,7 @@ const LandingPage: React.FC = () => {
                         ·快速開團、方便登記
                     </p>
                     <button
-                        onClick={() => router.push("/auth")}
+                        onClick={() => router.push("/user/auth")}
                         className="bg-teal-600 text-white text-xl px-6 py-3 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
                     >
                         立即開團

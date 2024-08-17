@@ -36,15 +36,10 @@ const GroupBuyForm: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        // console.log("UID from Form: ", uid);
         if (!uid) {
             router.replace("/user/auth");
         }
     }, [uid]);
-
-    if (!uid) {
-        return null;
-    }
 
     const createForm = async (
         newFormData: GroupBuyFormType
@@ -65,13 +60,12 @@ const GroupBuyForm: React.FC = () => {
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // console.log(formData);
-
         const docId = await createForm(formData);
 
         if (docId) {
-            // console.log(docId);
-            alert("successfully adding new form to DB.");
+            alert(
+                "GroupBuy form created. Now you can share the public link with your friends!"
+            );
             setFormData(initialFormData);
             router.replace(`/form/detail/${docId}`);
         } else {
@@ -99,6 +93,10 @@ const GroupBuyForm: React.FC = () => {
             [name]: newValue,
         }));
     };
+
+    if (!uid) {
+        return null;
+    }
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center p-4 mt-36 mb-12">
@@ -197,7 +195,7 @@ const GroupBuyForm: React.FC = () => {
                             htmlFor="currentTotal"
                             className="block text-lg text-gray-300 font-medium mb-1"
                         >
-                            目前累積金額（＄）：
+                            目前累積金額/團主份額（＄）：
                         </label>
                         <input
                             type="number"
@@ -214,7 +212,7 @@ const GroupBuyForm: React.FC = () => {
                             htmlFor="difference"
                             className="block text-lg text-gray-300 font-medium mb-1"
                         >
-                            還差多少金額（＄）：
+                            免運差額（＄）：
                         </label>
                         <input
                             type="number"

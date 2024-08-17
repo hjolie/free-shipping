@@ -10,6 +10,9 @@ interface GroupBuyInfoType {
     formId: string;
     brand: string;
     product: string;
+    price: number;
+    threshold: number;
+    currentTotal: number;
 }
 
 // const forms: GroupBuyInfoType[] = [
@@ -26,15 +29,10 @@ const UserPortal: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        console.log("UID from UserPortal: ", uid);
         if (!uid) {
             router.replace("/user/auth");
         }
     }, [uid]);
-
-    if (!uid) {
-        return null;
-    }
 
     useEffect(() => {
         if (uid) {
@@ -47,6 +45,9 @@ const UserPortal: React.FC = () => {
                         formId: doc.id,
                         brand: doc.data().brand,
                         product: doc.data().product,
+                        price: doc.data().price,
+                        threshold: doc.data().threshold,
+                        currentTotal: doc.data().currentTotal,
                     })) as GroupBuyInfoType[];
 
                     setGroupBuyForms(formsData);
@@ -58,6 +59,10 @@ const UserPortal: React.FC = () => {
         }
     }, [uid]);
 
+    if (!uid) {
+        return null;
+    }
+
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 p-4 mt-36 mb-12">
             <div className="bg-gray-800 w-full max-w-1100 mx-auto rounded-lg shadow-lg p-8">
@@ -68,7 +73,16 @@ const UserPortal: React.FC = () => {
                     {groupBuyForms.map((data) => (
                         <Link
                             key={data.formId}
-                            href={`/user/detail/${data.formId}`}
+                            href={{
+                                pathname: `/user/buyers/${data.formId}`,
+                                query: {
+                                    brand: data.brand,
+                                    product: data.product,
+                                    price: data.price,
+                                    threshold: data.threshold,
+                                    currentTotal: data.currentTotal,
+                                },
+                            }}
                             className="block bg-gray-700 border border-gray-200 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105 hover:bg-teal-700 hover:shadow-2xl"
                         >
                             <p className="text-lg text-gray-300 font-semibold mb-2">

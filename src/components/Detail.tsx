@@ -30,7 +30,6 @@ const initialBuyerFormData: BuyerFormType = {
 
 const Detail: React.FC = () => {
     const { id } = useParams();
-    console.log(id);
     const [loading, setLoading] = useState(true); //animation
     const [groupBuyFormData, setGroupBuyFormData] = useState<any>(null);
     const [showBuyerForm, setShowBuyerForm] = useState(false);
@@ -54,7 +53,7 @@ const Detail: React.FC = () => {
                     if (docSnap.exists()) {
                         setGroupBuyFormData(docSnap.data());
                     } else {
-                        console.log("Can't find the form with formId: ", id);
+                        console.error("Can't find the form with formId: ", id);
                         alert(`Can't find the form with formId: ${id}`);
                         router.replace("/");
                     }
@@ -67,10 +66,6 @@ const Detail: React.FC = () => {
             fetchData();
         }
     }, [id]);
-
-    if (!groupBuyFormData) return <p>Data not found</p>;
-
-    console.log(groupBuyFormData);
 
     const handleShowBuyerForm = () => {
         setShowBuyerForm(true);
@@ -102,12 +97,10 @@ const Detail: React.FC = () => {
 
     const handleBuyerFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(buyerFormData);
 
         const buyerId = await createBuyerForm(buyerFormData);
 
         if (buyerId) {
-            console.log(buyerId);
             alert("Congrats for successfully placing an order!");
             setBuyerFormData(initialBuyerFormData);
             router.replace("/");
@@ -193,7 +186,7 @@ const Detail: React.FC = () => {
                             </div>
                             <div>
                                 <h2 className="text-lg text-gray-300 block font-medium mb-1">
-                                    目前累積金額（＄）：
+                                    目前累積金額/團主份額（＄）：
                                 </h2>
                                 <p className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600">
                                     {groupBuyFormData.currentTotal}
@@ -201,7 +194,7 @@ const Detail: React.FC = () => {
                             </div>
                             <div>
                                 <h2 className="text-lg text-gray-300 block font-medium mb-1">
-                                    還差多少金額（＄）：
+                                    免運差額（＄）：
                                 </h2>
                                 <p className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600">
                                     {groupBuyFormData.difference}
@@ -236,7 +229,7 @@ const Detail: React.FC = () => {
                     {showBuyerForm && (
                         <div className="w-full max-w-2xl bg-gray-800 rounded-lg shadow-lg p-8">
                             <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center tracking-wider">
-                                團購登記單
+                                登記表單
                             </h1>
                             <form
                                 onSubmit={handleBuyerFormSubmit}

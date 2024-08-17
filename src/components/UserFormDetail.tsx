@@ -2,7 +2,16 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthStateCheck";
-import { getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore/lite";
+import {
+    getDoc,
+    doc,
+    updateDoc,
+    deleteDoc,
+    collection,
+    query,
+    where,
+    getDocs,
+} from "firebase/firestore/lite";
 import db from "@/utils/db";
 
 // const data = {
@@ -31,15 +40,10 @@ const UserFormDetail: React.FC = () => {
     }>({});
 
     useEffect(() => {
-        console.log("UID from UserFormDetail: ", uid);
         if (!uid) {
             router.replace("/user/auth");
         }
     }, [uid]);
-
-    if (!uid) {
-        return null;
-    }
 
     useEffect(() => {
         // Loading Animation
@@ -67,7 +71,7 @@ const UserFormDetail: React.FC = () => {
                                 }
                             );
                         } else {
-                            console.log("Can't find the form with id: ", id);
+                            console.error("Can't find the form with id: ", id);
                             alert(`Can't find the form with formId: ${id}`);
                             router.replace("/");
                         }
@@ -82,12 +86,9 @@ const UserFormDetail: React.FC = () => {
         }
     }, [id]);
 
-    console.log("Original from fetch: ", originalValues.product);
-    console.log("Current from fetch: ", currentValues.product);
-
     const handleSaveBtn = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Save btn clicked: ", currentValues.product);
+
         try {
             const updatedFields = Object.keys(currentValues).reduce(
                 (acc, key) => {
@@ -99,8 +100,6 @@ const UserFormDetail: React.FC = () => {
                 {} as { [key: string]: string | number }
             );
 
-            console.log("Updated: ", updatedFields);
-
             if (Object.keys(updatedFields).length > 0) {
                 const docRef = doc(db, "forms", id as string);
 
@@ -109,7 +108,6 @@ const UserFormDetail: React.FC = () => {
                 setOriginalValues(currentValues);
                 setIsEditing(false);
                 alert("GroupBuy Info updated successfully!");
-                // router.replace(`/user/detail/${id}`);
             } else {
                 alert("No changes detected.");
                 setIsEditing(false);
@@ -142,15 +140,36 @@ const UserFormDetail: React.FC = () => {
     };
 
     const handleDeleteBtn = async () => {
-        alert("Are you sure to delete this form?");
+        const userConfirmed = confirm(
+            "Are you sure to delete this group buy form? All the associated buyers data will also be deleted!"
+        );
 
-        try {
-            await deleteDoc(doc(db, "forms", id as string));
-            router.replace("/user");
-        } catch (err) {
-            console.error(`Error deleting the form - ${id}: `, err);
+        if (userConfirmed) {
+            try {
+                await deleteDoc(doc(db, "forms", id as string));
+
+                let buyersDocs: string[] = [];
+                const buyersRef = collection(db, "buyers");
+                const queryDocs = query(buyersRef, where("formId", "==", id));
+                const querySnapshot = await getDocs(queryDocs);
+                buyersDocs = querySnapshot.docs.map((doc) => doc.id);
+                for (const docId of buyersDocs) {
+                    await deleteDoc(doc(db, "buyers", docId));
+                }
+
+                alert(
+                    "Deleted successfully. You will be redirected to User Portal."
+                );
+                router.replace("/user");
+            } catch (err) {
+                console.error(`Error deleting the form - ${id}: `, err);
+            }
         }
     };
+
+    if (!uid) {
+        return null;
+    }
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center p-4 mt-36 mb-12 space-y-12">
@@ -212,7 +231,7 @@ const UserFormDetail: React.FC = () => {
                                 </div>
                                 <div>
                                     <h2 className="text-lg text-gray-300 block font-medium mb-1">
-                                        目前累積金額（＄）：
+                                        目前累積金額/團主份額（＄）：
                                     </h2>
                                     <p className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600">
                                         {originalValues.currentTotal}
@@ -220,7 +239,7 @@ const UserFormDetail: React.FC = () => {
                                 </div>
                                 <div>
                                     <h2 className="text-lg text-gray-300 block font-medium mb-1">
-                                        還差多少金額（＄）：
+                                        免運差額（＄）：
                                     </h2>
                                     <p className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600">
                                         {originalValues.difference}
@@ -275,6 +294,7 @@ const UserFormDetail: React.FC = () => {
                                         品牌/商家名稱：
                                     </label>
                                     <input
+                                        autoFocus
                                         type="text"
                                         id="brand"
                                         name="brand"
@@ -357,7 +377,7 @@ const UserFormDetail: React.FC = () => {
                                         htmlFor="currentTotal"
                                         className="block text-lg text-gray-300 font-medium mb-1"
                                     >
-                                        目前累積金額（＄）：
+                                        目前累積金額/團主份額（＄）：
                                     </label>
                                     <input
                                         type="number"
@@ -374,7 +394,7 @@ const UserFormDetail: React.FC = () => {
                                         htmlFor="difference"
                                         className="block text-lg text-gray-300 font-medium mb-1"
                                     >
-                                        還差多少金額（＄）：
+                                        免運差額（＄）：
                                     </label>
                                     <input
                                         type="number"
