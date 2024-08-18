@@ -27,6 +27,8 @@ const UserPortal: React.FC = () => {
     const { uid } = useAuth();
     const [groupBuyForms, setGroupBuyForms] = useState<GroupBuyInfoType[]>([]);
     const router = useRouter();
+    const [copiedFormId, setCopiedFormId] = useState<string | null>(null);
+    const domainPrefixUrl = "https://free-shipping-go.vercel.app/form/detail/";
 
     useEffect(() => {
         if (!uid) {
@@ -59,6 +61,18 @@ const UserPortal: React.FC = () => {
         }
     }, [uid]);
 
+    const handleCopyLink = (formId: string) => {
+        navigator.clipboard
+            .writeText(domainPrefixUrl + formId)
+            .then(() => {
+                setCopiedFormId(formId);
+                setTimeout(() => setCopiedFormId(null), 3000);
+            })
+            .catch((err) => {
+                console.error("Failed to copy: ", err);
+            });
+    };
+
     if (!uid) {
         return null;
     }
@@ -69,29 +83,41 @@ const UserPortal: React.FC = () => {
                 <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center tracking-wider">
                     開團記錄
                 </h1>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     {groupBuyForms.map((data) => (
-                        <Link
-                            key={data.formId}
-                            href={{
-                                pathname: `/user/buyers/${data.formId}`,
-                                query: {
-                                    brand: data.brand,
-                                    product: data.product,
-                                    price: data.price,
-                                    threshold: data.threshold,
-                                    currentTotal: data.currentTotal,
-                                },
-                            }}
-                            className="block bg-gray-700 border border-gray-200 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105 hover:bg-teal-700 hover:shadow-2xl"
-                        >
-                            <p className="text-lg text-gray-300 font-semibold mb-2">
-                                {data.brand}
-                            </p>
-                            <p className="text-xl text-teal-300 font-bold mb-1 hover:font-extrabold">
-                                {data.product}
-                            </p>
-                        </Link>
+                        <div key={data.formId}>
+                            <Link
+                                href={{
+                                    pathname: `/user/buyers/${data.formId}`,
+                                    query: {
+                                        brand: data.brand,
+                                        product: data.product,
+                                        price: data.price,
+                                        threshold: data.threshold,
+                                        currentTotal: data.currentTotal,
+                                    },
+                                }}
+                                className="block bg-gray-700 border border-gray-200 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105 hover:bg-teal-700 hover:shadow-2xl"
+                            >
+                                <p className="text-lg text-center text-gray-300 font-semibold mb-2">
+                                    {data.brand}
+                                </p>
+                                <p className="text-xl text-center text-teal-300 font-bold mb-1 hover:font-extrabold">
+                                    {data.product}
+                                </p>
+                            </Link>
+                            <div className="flex items-center bg-gray-800 text-white rounded-lg shadow-md p-2">
+                                <span>複製連結並分享給親友：</span>
+                                <button
+                                    onClick={() => handleCopyLink(data.formId)}
+                                    className="whitespace-nowrap ml-auto px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700 hover:font-bold focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+                                >
+                                    {copiedFormId === data.formId
+                                        ? "已複製！"
+                                        : "複製"}
+                                </button>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>
