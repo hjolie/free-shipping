@@ -16,11 +16,46 @@ interface GroupBuyInfoType {
 }
 
 // const forms: GroupBuyInfoType[] = [
-//     { formId: "1", brand: "Brand A", product: "Order A" },
-//     { formId: "2", brand: "Brand B", product: "Order B" },
-//     { formId: "3", brand: "Brand C", product: "Order C" },
-//     { formId: "4", brand: "Brand D", product: "Order D" },
-//     { formId: "5", brand: "Brand E", product: "Order E" },
+//     {
+//         formId: "1",
+//         brand: "Brand A",
+//         product: "Order A",
+//         price: 123,
+//         threshold: 321,
+//         currentTotal: 123,
+//     },
+//     {
+//         formId: "2",
+//         brand: "Brand B",
+//         product: "Order B",
+//         price: 123,
+//         threshold: 321,
+//         currentTotal: 123,
+//     },
+//     {
+//         formId: "3",
+//         brand: "Brand C",
+//         product: "Order C",
+//         price: 123,
+//         threshold: 321,
+//         currentTotal: 123,
+//     },
+//     {
+//         formId: "4",
+//         brand: "Brand D",
+//         product: "Order D",
+//         price: 123,
+//         threshold: 321,
+//         currentTotal: 123,
+//     },
+//     {
+//         formId: "5",
+//         brand: "Brand E",
+//         product: "Order E",
+//         price: 123,
+//         threshold: 321,
+//         currentTotal: 123,
+//     },
 // ];
 
 const UserPortal: React.FC = () => {
@@ -61,6 +96,38 @@ const UserPortal: React.FC = () => {
         }
     }, [uid]);
 
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src =
+            "https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js";
+        script.async = true;
+        script.defer = true;
+
+        script.onload = () => {
+            if (window.LineIt) {
+                window.LineIt.loadButton();
+            }
+        };
+
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    useEffect(() => {
+        const loadLineShareButton = () => {
+            if (window.LineIt) {
+                window.LineIt.loadButton();
+            }
+        };
+
+        if (groupBuyForms.length > 0) {
+            loadLineShareButton();
+        }
+    }, [groupBuyForms]);
+
     const handleCopyLink = (formId: string) => {
         navigator.clipboard
             .writeText(domainPrefixUrl + formId)
@@ -85,6 +152,64 @@ const UserPortal: React.FC = () => {
                 </h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     {groupBuyForms.map((data) => (
+                        <div
+                            key={data.formId}
+                            className="bg-gray-700 border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+                        >
+                            <Link
+                                href={{
+                                    pathname: `/user/buyers/${data.formId}`,
+                                    query: {
+                                        brand: data.brand,
+                                        product: data.product,
+                                        price: data.price,
+                                        threshold: data.threshold,
+                                        currentTotal: data.currentTotal,
+                                    },
+                                }}
+                                className="block p-4 transition-transform transform hover:scale-105 hover:bg-teal-700 hover:shadow-2xl"
+                            >
+                                <p className="text-lg text-center text-gray-300 font-semibold mb-2">
+                                    {data.brand}
+                                </p>
+                                <p className="text-xl text-center text-teal-300 font-bold mb-1 hover:text-teal-400">
+                                    {data.product}
+                                </p>
+                            </Link>
+                            <div className="bg-gray-700 border-t border-gray-200 p-1">
+                                <p className="text-gray-300 text-center font-bold mb-2">
+                                    揪親友湊免運：
+                                </p>
+                                <div className="flex items-center justify-evenly space-x-2">
+                                    <button
+                                        onClick={() =>
+                                            handleCopyLink(data.formId)
+                                        }
+                                        className="whitespace-nowrap px-2 py-1 bg-teal-600 text-white rounded hover:bg-teal-700 hover:font-bold focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+                                    >
+                                        {copiedFormId === data.formId
+                                            ? "已複製！"
+                                            : "複製連結"}
+                                    </button>
+                                    <div
+                                        className="line-it-button"
+                                        data-lang="zh_Hant"
+                                        data-type="share-a"
+                                        data-env="REAL"
+                                        data-url={domainPrefixUrl + data.formId}
+                                        data-color="default"
+                                        data-size="large"
+                                        data-count="false"
+                                        data-ver="3"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    {forms.map((data) => (
                         <div key={data.formId}>
                             <Link
                                 href={{
@@ -106,20 +231,37 @@ const UserPortal: React.FC = () => {
                                     {data.product}
                                 </p>
                             </Link>
-                            <div className="flex items-center bg-gray-800 text-white rounded-lg shadow-md p-2">
-                                <span>複製連結並分享給親友：</span>
-                                <button
-                                    onClick={() => handleCopyLink(data.formId)}
-                                    className="whitespace-nowrap ml-auto px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700 hover:font-bold focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
-                                >
-                                    {copiedFormId === data.formId
-                                        ? "已複製！"
-                                        : "複製"}
-                                </button>
+                            <div className="block bg-gray-700 border border-gray-200 rounded-lg shadow-lg rounded-lg shadow-md p-2">
+                                <p className="text-gray-300 text-center">
+                                    分享給親友：
+                                </p>
+                                <div className="flex justify-between">
+                                    <button
+                                        onClick={() =>
+                                            handleCopyLink(data.formId)
+                                        }
+                                        className="whitespace-nowrap ml-auto px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700 hover:font-bold focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+                                    >
+                                        {copiedFormId === data.formId
+                                            ? "已複製！"
+                                            : "複製連結"}
+                                    </button>
+                                    <div
+                                        className="line-it-button"
+                                        data-lang="zh_Hant"
+                                        data-type="share-a"
+                                        data-env="REAL"
+                                        data-url="https://developers.line.biz/zh-hant/docs/line-social-plugins/install-guide/using-line-share-buttons/"
+                                        data-color="default"
+                                        data-size="large"
+                                        data-count="false"
+                                        data-ver="3"
+                                    ></div>
+                                </div>
                             </div>
                         </div>
                     ))}
-                </div>
+                </div> */}
             </div>
         </div>
     );
