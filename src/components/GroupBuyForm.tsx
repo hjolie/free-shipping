@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/components/AuthStateCheck";
 import { collection, addDoc } from "firebase/firestore/lite";
 import db from "@/utils/db";
+import { toast } from "sonner";
 
 interface GroupBuyFormType {
     brand: string;
@@ -63,13 +64,24 @@ const GroupBuyForm: React.FC = () => {
         const docId = await createForm(formData);
 
         if (docId) {
-            alert(
-                "GroupBuy form created. Now you can share the public link with your friends!"
+            toast.success(
+                "團購單建立成功！即將導向團購單公開連結，可立即傳送給親友下單！",
+                {
+                    duration: 5000,
+                }
             );
             setFormData(initialFormData);
-            router.replace(`/form/detail/${docId}`);
+            setTimeout(() => {
+                router.replace(`/form/detail/${docId}`);
+            }, 5500);
         } else {
             console.error("Failed to retrieve the docId");
+            toast.error(
+                "無法取得團購單公開連結，請另至「會員中心」取得該連結",
+                {
+                    duration: 5000,
+                }
+            );
         }
     };
 

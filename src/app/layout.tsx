@@ -3,6 +3,7 @@ import { Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import AuthProvider from "@/components/AuthStateCheck";
+import { Toaster } from "sonner";
 
 const notoSansTC = Noto_Sans_TC({
     weight: ["400", "700", "900"],
@@ -21,11 +22,23 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="zh-Hant">
             <AuthProvider>
                 <body className={notoSansTC.className}>
                     <Header />
                     <main>{children}</main>
+                    <Toaster
+                        position="top-center"
+                        richColors
+                        closeButton
+                        theme="dark"
+                        toastOptions={{
+                            style: {
+                                background: "#374151",
+                                fontSize: "18px",
+                            },
+                        }}
+                    />
                 </body>
             </AuthProvider>
         </html>

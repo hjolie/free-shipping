@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import userAuth from "@/utils/userAuth";
 import { useAuth } from "@/components/AuthStateCheck";
+import { toast } from "sonner";
 
 const SignInSignOutPage: React.FC = () => {
     const [isSignIn, setIsSignIn] = useState(true);
@@ -43,14 +44,20 @@ const SignInSignOutPage: React.FC = () => {
             setSignInEmail("");
             setSignInPassword("");
 
-            alert("Signed in successfully! Please click OK to continue.");
+            toast.success("登入成功！");
 
             router.push("/form");
-        } catch (err) {
-            alert(
-                "Failed to sign in due to incorrect email or password, please try again."
-            );
-            console.error("Error signing in: ", err);
+        } catch (error) {
+            const typedError = error as Error;
+
+            if (typedError.message.includes("auth/invalid-credential")) {
+                console.error(typedError.message);
+                toast.error("帳號或密碼錯誤！請重新登入");
+            } else {
+                console.error(typedError.message);
+                toast.error("登入失敗！請重新登入");
+            }
+
             setSignInEmail("");
             setSignInPassword("");
         }
@@ -71,14 +78,25 @@ const SignInSignOutPage: React.FC = () => {
             setSignUpEmail("");
             setSignUpPassword("");
 
-            alert("Signed up successfully! Please sign in to continue.");
+            toast.success("註冊成功！登入後即可開團！");
 
             window.location.reload();
-        } catch (err) {
-            alert(
-                "This email has been used, please sign in or try with a different email ."
-            );
-            console.error("Error signing up: ", err);
+
+            // router.replace("/user/auth");
+        } catch (error) {
+            const typedError = error as Error;
+
+            if (typedError.message.includes("auth/email-already-in-use")) {
+                console.error(typedError.message);
+                toast.error("此電子郵件已被註冊！");
+            } else if (typedError.message.includes("auth/weak-password")) {
+                console.error(typedError.message);
+                toast.error("密碼需至少6位數！");
+            } else {
+                console.error(typedError.message);
+                toast.error("註冊失敗！請重新註冊");
+            }
+
             setSignUpEmail("");
             setSignUpPassword("");
         }

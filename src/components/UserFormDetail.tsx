@@ -13,6 +13,7 @@ import {
     getDocs,
 } from "firebase/firestore/lite";
 import db from "@/utils/db";
+import { toast } from "sonner";
 
 // const data = {
 //     brand: "佳德",
@@ -72,13 +73,17 @@ const UserFormDetail: React.FC = () => {
                             );
                         } else {
                             console.error("Can't find the form with id: ", id);
-                            alert(`Can't find the form with formId: ${id}`);
-                            router.replace("/");
+                            toast.error("此團購單不存在");
+                            setTimeout(() => {
+                                router.replace("/");
+                            }, 3000);
                         }
                     } catch (error) {
                         console.error("Error fetching doc: ", error);
-                        alert(`Error fetching doc: ${error}`);
-                        router.replace("/");
+                        toast.error("團購單讀取失敗");
+                        setTimeout(() => {
+                            router.replace("/");
+                        }, 3000);
                     }
                 };
                 fetchData();
@@ -107,13 +112,15 @@ const UserFormDetail: React.FC = () => {
 
                 setOriginalValues(currentValues);
                 setIsEditing(false);
-                alert("GroupBuy Info updated successfully!");
+                toast.success("團購單更新成功！");
             } else {
-                alert("No changes detected.");
+                toast.info("內容無修改");
                 setIsEditing(false);
             }
         } catch (error) {
             console.error("Error updating the form: ", error);
+            toast.error("團購單更新失敗！請再試一次");
+            setIsEditing(false);
         }
     };
 
@@ -140,9 +147,25 @@ const UserFormDetail: React.FC = () => {
     };
 
     const handleDeleteBtn = async () => {
-        const userConfirmed = confirm(
-            "Are you sure to delete this group buy form? All the associated buyers data will also be deleted!"
-        );
+        const userConfirmed = await new Promise<boolean>((resolve) => {
+            toast.warning(
+                "確定要刪除此團購單嗎？跟團者名單也將一併被刪除！此刪除動作將無法復原！",
+                {
+                    action: {
+                        label: "確定刪除",
+                        onClick: () => resolve(true),
+                    },
+                    cancel: {
+                        label: "取消返回",
+                        onClick: () => resolve(false),
+                    },
+                }
+            );
+        });
+
+        // const userConfirmed = confirm(
+        //     "Are you sure to delete this group buy form? All the associated buyers data will also be deleted!"
+        // );
 
         if (userConfirmed) {
             try {
@@ -157,12 +180,13 @@ const UserFormDetail: React.FC = () => {
                     await deleteDoc(doc(db, "buyers", docId));
                 }
 
-                alert(
-                    "Deleted successfully. You will be redirected to User Portal."
-                );
-                router.replace("/user");
+                toast.success("團購單已刪除！即將返回會員中心");
+                setTimeout(() => {
+                    router.replace("/user");
+                }, 3500);
             } catch (err) {
                 console.error(`Error deleting the form - ${id}: `, err);
+                toast.error("刪除失敗！");
             }
         }
     };

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import userAuth from "@/utils/userAuth";
 import { useAuth } from "@/components/AuthStateCheck";
+import { toast } from "sonner";
 
 const Header: FC = React.memo(() => {
     const pathname = usePathname();
@@ -14,7 +15,7 @@ const Header: FC = React.memo(() => {
     const handleSignOut = async () => {
         try {
             await signOut(userAuth);
-            alert("Successfully signed out.");
+            toast.success("已登出！");
             router.replace("/");
         } catch (err) {
             console.error("Error signing out: ", err);
@@ -24,9 +25,12 @@ const Header: FC = React.memo(() => {
     return (
         <nav className="navbar p-4 bg-dark-ocean text-gray-light fixed top-0 left-0 right-0 shadow-md z-50">
             <div className="container px-12 py-3 mx-auto flex justify-between items-center max-w-1200">
-                <h1 className="text-3xl font-bold text-teal-300 tracking-wider">
+                <Link
+                    href="/"
+                    className="text-3xl font-bold text-teal-300 tracking-wider"
+                >
                     免運GO
-                </h1>
+                </Link>
                 <div className="flex space-x-4">
                     <Link
                         href="/"

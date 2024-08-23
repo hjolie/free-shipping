@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getDoc, doc, collection, addDoc } from "firebase/firestore/lite";
 import db from "@/utils/db";
+import { toast } from "sonner";
 
 // const mockData = {
 //     brand: "佳德",
@@ -54,13 +55,17 @@ const Detail: React.FC = () => {
                         setGroupBuyFormData(docSnap.data());
                     } else {
                         console.error("Can't find the form with formId: ", id);
-                        alert(`Can't find the form with formId: ${id}`);
-                        router.replace("/");
+                        toast.error("此團購單不存在");
+                        setTimeout(() => {
+                            router.replace("/");
+                        }, 3000);
                     }
                 } catch (error) {
                     console.error("Error fetching doc: ", error);
-                    alert(`Error fetching doc: ${error}`);
-                    router.replace("/");
+                    toast.error("團購單讀取失敗");
+                    setTimeout(() => {
+                        router.replace("/");
+                    }, 3000);
                 }
             };
             fetchData();
@@ -101,13 +106,21 @@ const Detail: React.FC = () => {
         const buyerId = await createBuyerForm(buyerFormData);
 
         if (buyerId) {
-            alert("Congrats for successfully placing an order!");
+            toast.success("下單成功！", {
+                duration: 2500,
+            });
             setBuyerFormData(initialBuyerFormData);
-            router.replace("/");
+
+            setTimeout(() => {
+                router.replace("/form/joined");
+            }, 3000);
         } else {
             console.error("Failed to retrieve the buyId");
-            alert("Failed to placing the order, please try again.");
-            window.location.reload();
+            toast.error("下單失敗！請重新下單");
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
         }
     };
 
