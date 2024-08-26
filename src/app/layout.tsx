@@ -34,7 +34,7 @@ export default function RootLayout({
                         theme="dark"
                         toastOptions={{
                             style: {
-                                background: "#374151",
+                                background: "#4b5563",
                                 fontSize: "18px",
                             },
                         }}
