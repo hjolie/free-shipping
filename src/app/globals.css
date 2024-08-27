@@ -79,3 +79,7 @@ body {
 #header-signout-btn {
     margin-left: 30px;
 }
+#ham-signin-btn,
+#ham-signout-btn {
+    margin-top: 50px;
+}
