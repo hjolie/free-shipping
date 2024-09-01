@@ -1,11 +1,15 @@
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const LineSignOut = ({ id }: { id?: string }) => {
+    const router = useRouter();
+
     const handleLineSignOut = async () => {
         try {
-            await signOut({ callbackUrl: "/" });
+            await signOut({ redirect: false });
             toast.success("已登出！");
+            router.replace("/");
         } catch (err) {
             console.error("Error signing out: ", err);
         }

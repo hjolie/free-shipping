@@ -28,7 +28,11 @@ const LineSignIn = () => {
         e.preventDefault();
 
         try {
-            await signIn("line", { redirectTo: "/form" });
+            const res = await signIn("line", { redirect: false });
+            if (res?.ok) {
+                toast.success("登入成功！");
+                router.replace("/form");
+            }
         } catch (error) {
             console.error(error);
             toast.error("登入失敗！請重新登入");

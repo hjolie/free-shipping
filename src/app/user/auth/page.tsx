@@ -50,7 +50,7 @@ const SignInSignOutPage: React.FC = () => {
 
             toast.success("登入成功！");
 
-            router.push("/form");
+            router.replace("/form");
         } catch (error) {
             const typedError = error as Error;
 
