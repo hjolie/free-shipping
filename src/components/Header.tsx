@@ -6,14 +6,22 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import userAuth from "@/utils/userAuth";
 import { useAuth } from "@/components/AuthStateCheck";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import Image from "next/image";
+import LineSignOut from "./LineSignOut";
 
 const Header: FC = React.memo(() => {
     const [openHamMenu, setOpenHamMenu] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
+
     const { uid } = useAuth();
+
+    const { data: session } = useSession();
+    const lineUid = session?.user?.id;
+
+    let userId = uid ? uid : lineUid;
 
     const toggleHamMenu = () => {
         setOpenHamMenu(!openHamMenu);
@@ -95,7 +103,7 @@ const Header: FC = React.memo(() => {
                         會員中心
                     </Link>
 
-                    {!uid ? (
+                    {!userId ? (
                         <button
                             onClick={() => router.push("/user/auth")}
                             className="bg-teal-600 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
@@ -103,7 +111,7 @@ const Header: FC = React.memo(() => {
                         >
                             登入
                         </button>
-                    ) : (
+                    ) : uid ? (
                         <button
                             onClick={handleSignOut}
                             className="bg-teal-600 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
@@ -111,6 +119,8 @@ const Header: FC = React.memo(() => {
                         >
                             登出
                         </button>
+                    ) : (
+                        <LineSignOut id="header-signout-btn" />
                     )}
                 </div>
             </div>
@@ -206,7 +216,7 @@ const Header: FC = React.memo(() => {
                         </span>
                     </div>
 
-                    {!uid ? (
+                    {!userId ? (
                         <button
                             onClick={() => {
                                 router.push("/user/auth");
@@ -217,7 +227,7 @@ const Header: FC = React.memo(() => {
                         >
                             登入
                         </button>
-                    ) : (
+                    ) : uid ? (
                         <button
                             onClick={() => {
                                 handleSignOut();
@@ -228,6 +238,8 @@ const Header: FC = React.memo(() => {
                         >
                             登出
                         </button>
+                    ) : (
+                        <LineSignOut id="ham-signout-btn" />
                     )}
                 </div>
             </div>

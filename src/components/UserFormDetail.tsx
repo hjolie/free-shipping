@@ -2,6 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthStateCheck";
+import { useSession } from "next-auth/react";
 import {
     getDoc,
     doc,
@@ -40,11 +41,16 @@ const UserFormDetail: React.FC = () => {
         [key: string]: string | number;
     }>({});
 
+    const { data: session } = useSession();
+    const lineUid = session?.user?.id;
+
+    let userId = uid ? uid : lineUid;
+
     useEffect(() => {
-        if (!uid) {
+        if (!uid && !lineUid) {
             router.replace("/user/auth");
         }
-    }, [uid]);
+    }, [uid, session]);
 
     useEffect(() => {
         // Loading Animation
@@ -53,7 +59,7 @@ const UserFormDetail: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (uid) {
+        if (userId) {
             if (id) {
                 const fetchData = async () => {
                     try {
@@ -163,10 +169,6 @@ const UserFormDetail: React.FC = () => {
             );
         });
 
-        // const userConfirmed = confirm(
-        //     "Are you sure to delete this group buy form? All the associated buyers data will also be deleted!"
-        // );
-
         if (userConfirmed) {
             try {
                 await deleteDoc(doc(db, "forms", id as string));
@@ -191,7 +193,7 @@ const UserFormDetail: React.FC = () => {
         }
     };
 
-    if (!uid) {
+    if (!uid && !lineUid) {
         return null;
     }
 

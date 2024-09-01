@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthStateCheck";
+import { useSession } from "next-auth/react";
 import db from "@/utils/db";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";
 
@@ -59,24 +60,32 @@ interface GroupBuyInfoType {
 // ];
 
 const UserPortal: React.FC = () => {
-    const { uid } = useAuth();
     const [groupBuyForms, setGroupBuyForms] = useState<GroupBuyInfoType[]>([]);
-    const router = useRouter();
     const [copiedFormId, setCopiedFormId] = useState<string | null>(null);
+    const router = useRouter();
     const domainPrefixUrl = "https://free-shipping-go.vercel.app/form/detail/";
 
-    useEffect(() => {
-        if (!uid) {
-            router.replace("/user/auth");
-        }
-    }, [uid]);
+    const { uid } = useAuth();
+    const { data: session } = useSession();
+    const lineUid = session?.user?.id;
+
+    let userId = uid ? uid : lineUid;
 
     useEffect(() => {
-        if (uid) {
+        if (!uid && !lineUid) {
+            router.replace("/user/auth");
+        }
+    }, [uid, session]);
+
+    useEffect(() => {
+        if (userId) {
             const fetchData = async () => {
                 try {
                     const formsRef = collection(db, "forms");
-                    const queryDocs = query(formsRef, where("uid", "==", uid));
+                    const queryDocs = query(
+                        formsRef,
+                        where("uid", "==", userId)
+                    );
                     const querySnapshot = await getDocs(queryDocs);
                     const formsData = querySnapshot.docs.map((doc) => ({
                         formId: doc.id,
@@ -94,7 +103,7 @@ const UserPortal: React.FC = () => {
             };
             fetchData();
         }
-    }, [uid]);
+    }, [uid, session]);
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -140,7 +149,7 @@ const UserPortal: React.FC = () => {
             });
     };
 
-    if (!uid) {
+    if (!uid && !lineUid) {
         return null;
     }
 

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import AuthProvider from "@/components/AuthStateCheck";
 import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
 
 const notoSansTC = Noto_Sans_TC({
     weight: ["400", "700", "900"],
@@ -24,22 +25,24 @@ export default function RootLayout({
     return (
         <html lang="zh-Hant">
             <AuthProvider>
-                <body className={notoSansTC.className}>
-                    <Header />
-                    <main>{children}</main>
-                    <Toaster
-                        position="top-center"
-                        richColors
-                        closeButton
-                        theme="dark"
-                        toastOptions={{
-                            style: {
-                                background: "#4b5563",
-                                fontSize: "18px",
-                            },
-                        }}
-                    />
-                </body>
+                <SessionProvider>
+                    <body className={notoSansTC.className}>
+                        <Header />
+                        <main>{children}</main>
+                        <Toaster
+                            position="top-center"
+                            richColors
+                            closeButton
+                            theme="dark"
+                            toastOptions={{
+                                style: {
+                                    background: "#4b5563",
+                                    fontSize: "18px",
+                                },
+                            }}
+                        />
+                    </body>
+                </SessionProvider>
             </AuthProvider>
         </html>
     );

@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/AuthStateCheck";
+import { useSession } from "next-auth/react";
 import { collection, addDoc } from "firebase/firestore/lite";
 import db from "@/utils/db";
 import { toast } from "sonner";
@@ -32,15 +33,27 @@ const initialFormData: GroupBuyFormType = {
 
 const GroupBuyForm: React.FC = () => {
     const [formData, setFormData] = useState<GroupBuyFormType>(initialFormData);
-
-    const { uid } = useAuth();
     const router = useRouter();
 
+    const { uid } = useAuth();
+
+    const { data: session } = useSession();
+    const lineUid = session?.user?.id;
+    // console.log(lineUid);
+
+    let userId = uid ? uid : lineUid;
+
     useEffect(() => {
-        if (!uid) {
+        if (!uid && !lineUid) {
             router.replace("/user/auth");
         }
-    }, [uid]);
+    }, [uid, session]);
+
+    // useEffect(() => {
+    //     if (!uid) {
+    //         router.replace("/user/auth");
+    //     }
+    // }, [uid]);
 
     const createForm = async (
         newFormData: GroupBuyFormType
@@ -48,7 +61,7 @@ const GroupBuyForm: React.FC = () => {
         try {
             const newDoc = await addDoc(collection(db, "forms"), {
                 ...newFormData,
-                uid: uid,
+                uid: userId,
             });
 
             return newDoc.id;
@@ -106,7 +119,7 @@ const GroupBuyForm: React.FC = () => {
         }));
     };
 
-    if (!uid) {
+    if (!uid && !lineUid) {
         return null;
     }
 

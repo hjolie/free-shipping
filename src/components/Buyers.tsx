@@ -2,6 +2,7 @@
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthStateCheck";
+import { useSession } from "next-auth/react";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";
 import db from "@/utils/db";
 import Link from "next/link";
@@ -15,6 +16,9 @@ interface BuyersInfoType {
 const Buyers: React.FC = () => {
     const { uid } = useAuth();
     const { id } = useParams();
+    const { data: session } = useSession();
+    const lineUid = session?.user?.id;
+    let userId = uid ? uid : lineUid;
     const [loading, setLoading] = useState(true); //animation
     const router = useRouter();
 
@@ -34,10 +38,10 @@ const Buyers: React.FC = () => {
     // ]);
 
     useEffect(() => {
-        if (!uid) {
+        if (!uid && !lineUid) {
             router.replace("/user/auth");
         }
-    }, [uid]);
+    }, [uid, session]);
 
     useEffect(() => {
         // Loading Animation
@@ -46,7 +50,7 @@ const Buyers: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (uid) {
+        if (userId) {
             if (id) {
                 const fetchData = async () => {
                     try {
@@ -94,7 +98,7 @@ const Buyers: React.FC = () => {
         }
     };
 
-    if (!uid) {
+    if (!uid && !lineUid) {
         return null;
     }
 
