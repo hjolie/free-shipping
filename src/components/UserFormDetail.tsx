@@ -198,7 +198,7 @@ const UserFormDetail: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center p-4 mt-36 mb-12 space-y-12">
+        <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center px-4 py-40 space-y-12">
             {loading ? (
                 <div className="fixed inset-4 pt-80 flex flex-col items-center">
                     <div className="loader"></div>

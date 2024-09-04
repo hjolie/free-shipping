@@ -9,10 +9,10 @@ const PopUpInfo: React.FC<PopUpInfoProps> = ({ show, onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 text-gray-300 p-10 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 relative">
+            <div className="bg-gray-800 text-gray-300 p-8 sm:p-10 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 relative max-h-[90vh] overflow-y-auto">
                 <button
                     onClick={onClose}
-                    className="bg-teal-600 text-white text-lg p-1 rounded-lg hover:bg-teal-700 hover:font-bold focus:outline-none transition duration-300 absolute top-8 right-8"
+                    className="bg-teal-600 text-white text-lg p-1 rounded-lg hover:bg-teal-700 hover:font-bold focus:outline-none transition duration-300 absolute top-4 right-4 sm:top-6 sm:right-6"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

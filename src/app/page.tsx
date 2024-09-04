@@ -9,8 +9,8 @@ const LandingPage: React.FC = () => {
     const [showPopUp, setShowPopUp] = useState(false);
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-900 text-gray-200">
-            <div className="flex-grow flex flex-col items-center justify-center space-y-6 mt-32 px-4 md:mt-14 md:space-y-14">
+        <div className="min-h-screen flex flex-col bg-gray-900 text-gray-200 pt-40 sm:pt-36 md:pt-12 pb-32 md:pb-12">
+            <div className="flex-grow flex flex-col items-center justify-center space-y-6 px-4 md:space-y-14">
                 <div className="flex flex-col items-center space-y-6 text-center md:flex-row md:gap-x-10">
                     <div className="space-y-6 md:order-2 md:space-y-8">
                         <h1 className="text-4xl xl:text-5xl font-bold text-teal-400 tracking-wide animate-from-left">

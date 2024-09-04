@@ -154,7 +154,7 @@ const UserPortal: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-100 p-4 mt-36 mb-12">
+        <div className="min-h-screen bg-gray-900 text-gray-100 px-4 py-40">
             <div className="bg-gray-800 w-full max-w-1100 mx-auto rounded-lg shadow-lg p-8">
                 <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center tracking-wider">
                     開團記錄

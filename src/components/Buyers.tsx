@@ -103,7 +103,7 @@ const Buyers: React.FC = () => {
     }
 
     return (
-        <div className="max-w-1100 mx-auto mt-40 px-5 text-center bg-gray-900 text-gray-100">
+        <div className="max-w-1100 mx-auto text-center text-lg bg-gray-900 text-gray-100 px-5 py-40">
             {loading ? (
                 <div className="fixed inset-4 pt-80 flex flex-col items-center">
                     <div className="loader"></div>
@@ -113,19 +113,19 @@ const Buyers: React.FC = () => {
                 </div>
             ) : (
                 <>
-                    <h1 className="text-2xl font-bold text-teal-400 mt-16 text-center tracking-wider">
+                    <h1 className="text-2xl font-bold text-teal-400 text-center tracking-wider">
                         商品資訊
                     </h1>
                     <table className="min-w-full bg-gray-800 text-gray-300 mt-5 mb-5">
                         <thead className="bg-gray-700 border-b border-gray-600">
-                            <tr>
+                            <tr className="font-semibold">
                                 <th className="py-3 px-4">品牌/商家</th>
                                 <th className="py-3 px-4">商品</th>
                                 <th className="py-3 px-4">價格</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="border-b border-gray-600 hover:bg-gray-700">
+                            <tr className="border-b border-gray-600">
                                 <td className="py-3 px-4">{brand}</td>
                                 <td className="py-3 px-4">{product}</td>
                                 <td className="py-3 px-4">${price}</td>
@@ -144,7 +144,7 @@ const Buyers: React.FC = () => {
                     </h1>
                     <table className="min-w-full bg-gray-800 text-gray-300 mt-5">
                         <thead className="bg-gray-700 border-b border-gray-600">
-                            <tr>
+                            <tr className="font-semibold">
                                 <th className="py-3 px-4">免運門檻</th>
                                 <th className="py-3 px-4">
                                     累積金額(含團主份額)
@@ -153,7 +153,7 @@ const Buyers: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="border-b border-gray-600 hover:bg-gray-700">
+                            <tr className="border-b border-gray-600">
                                 <td className="py-3 px-4">${threshold}</td>
                                 <td className="py-3 px-4">
                                     ${calculateTotal()}
@@ -170,7 +170,7 @@ const Buyers: React.FC = () => {
                     </h1>
                     <table className="min-w-full bg-gray-800 text-gray-300 mt-5 mb-10">
                         <thead className="bg-gray-700 border-b border-gray-600">
-                            <tr>
+                            <tr className="font-semibold">
                                 <th className="py-3 px-4">姓名</th>
                                 <th className="py-3 px-4">數量</th>
                                 <th className="py-3 px-4">備註</th>
@@ -181,7 +181,7 @@ const Buyers: React.FC = () => {
                             {buyersData.map((data, index) => (
                                 <tr
                                     key={index}
-                                    className="border-b border-gray-600 hover:bg-gray-700"
+                                    className="border-b border-gray-600"
                                 >
                                     <td className="py-3 px-4">{data.name}</td>
                                     <td className="py-3 px-4">

@@ -124,7 +124,7 @@ const GroupBuyForm: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center p-4 mt-36 mb-12">
+        <div className="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center px-4 py-40">
             <div className="w-full max-w-lg bg-gray-800 rounded-lg shadow-lg p-8">
                 <h1 className="text-2xl font-bold text-teal-400 mb-10 text-center tracking-wide">
                     建立親友團購單

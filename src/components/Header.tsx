@@ -42,7 +42,7 @@ const Header: FC = React.memo(() => {
     };
 
     return (
-        <nav className="navbar p-4 bg-dark-ocean text-gray-light fixed top-0 left-0 right-0 shadow-md z-50">
+        <nav className="navbar p-4 bg-dark-ocean text-gray-light fixed top-0 left-0 right-0 shadow-md z-40">
             <div className="container px-12 py-3 mx-auto flex justify-between items-center max-w-1200">
                 <Link
                     href="/"
