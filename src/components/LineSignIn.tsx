@@ -27,6 +27,10 @@ const LineSignIn = () => {
     const handleLineSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        toast.info("導向中，請稍候...", {
+            duration: 5000,
+        });
+
         try {
             const res = await signIn("line", { redirect: false });
             if (res?.ok) {
