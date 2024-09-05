@@ -97,6 +97,28 @@ const UserFormDetail: React.FC = () => {
         }
     }, [id]);
 
+    const handleUserInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+
+        let newValue: string | number = value;
+
+        if (
+            name === "price" ||
+            name === "threshold" ||
+            name === "currentTotal" ||
+            name === "difference"
+        ) {
+            newValue = value === "" ? "" : parseInt(value);
+        }
+
+        setCurrentValues((prevInputValues) => ({
+            ...prevInputValues,
+            [name]: newValue,
+        }));
+    };
+
     const handleSaveBtn = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -130,26 +152,24 @@ const UserFormDetail: React.FC = () => {
         }
     };
 
-    const handleUserInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.target;
+    const handleCancelBtn = async () => {
+        const userConfirmed = await new Promise<boolean>((resolve) => {
+            toast.warning("確定要取消編輯嗎？已修改的資料將不會被儲存！", {
+                action: {
+                    label: "取消編輯",
+                    onClick: () => resolve(true),
+                },
+                cancel: {
+                    label: "繼續編輯",
+                    onClick: () => resolve(false),
+                },
+            });
+        });
 
-        let newValue: string | number = value;
-
-        if (
-            name === "price" ||
-            name === "threshold" ||
-            name === "currentTotal" ||
-            name === "difference"
-        ) {
-            newValue = value === "" ? "" : parseInt(value);
+        if (userConfirmed) {
+            setCurrentValues(originalValues);
+            setIsEditing(false);
         }
-
-        setCurrentValues((prevInputValues) => ({
-            ...prevInputValues,
-            [name]: newValue,
-        }));
     };
 
     const handleDeleteBtn = async () => {
@@ -276,7 +296,10 @@ const UserFormDetail: React.FC = () => {
                                         截止收單日：
                                     </h2>
                                     <p className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600">
-                                        {originalValues.closingDate}
+                                        {originalValues.closingDate.replace(
+                                            "T",
+                                            "\u00a0\u00a0\u00a0"
+                                        ) + " 止"}
                                     </p>
                                 </div>
                                 <div>
@@ -362,6 +385,7 @@ const UserFormDetail: React.FC = () => {
                                         onChange={handleUserInputChange}
                                         className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         required
+                                        min={1}
                                     />
                                 </div>
                                 <div>
@@ -396,6 +420,7 @@ const UserFormDetail: React.FC = () => {
                                         onChange={handleUserInputChange}
                                         className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         required
+                                        min={1}
                                     />
                                 </div>
                                 <div>
@@ -413,6 +438,7 @@ const UserFormDetail: React.FC = () => {
                                         onChange={handleUserInputChange}
                                         className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         required
+                                        min={1}
                                     />
                                 </div>
                                 <div>
@@ -430,6 +456,7 @@ const UserFormDetail: React.FC = () => {
                                         onChange={handleUserInputChange}
                                         className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                                         required
+                                        min={1}
                                     />
                                 </div>
                                 <div>
@@ -474,6 +501,13 @@ const UserFormDetail: React.FC = () => {
                                     完成
                                 </button>
                             </form>
+                            <button
+                                onClick={handleCancelBtn}
+                                id="user-form-cancel-btn"
+                                className="w-full bg-teal-600 text-white text-lg py-2 px-4 mt-5 rounded-md hover:bg-teal-700 hover:font-bold focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            >
+                                取消
+                            </button>
                         </div>
                     )}
                 </>

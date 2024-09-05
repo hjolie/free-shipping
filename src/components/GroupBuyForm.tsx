@@ -98,7 +98,7 @@ const GroupBuyForm: React.FC = () => {
         }
     };
 
-    const handleChange = (
+    const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const { name, value } = e.target;
@@ -113,10 +113,25 @@ const GroupBuyForm: React.FC = () => {
         ) {
             newValue = value === "" ? "" : parseInt(value);
         }
+
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: newValue,
         }));
+    };
+
+    const getCurrentDateTime = () => {
+        const currentDateTime = new Date();
+
+        currentDateTime.setHours(currentDateTime.getHours() + 1);
+
+        const year = currentDateTime.getFullYear();
+        const month = String(currentDateTime.getMonth() + 1).padStart(2, "0");
+        const day = String(currentDateTime.getDate()).padStart(2, "0");
+        const hours = String(currentDateTime.getHours()).padStart(2, "0");
+        const minutes = String(currentDateTime.getMinutes()).padStart(2, "0");
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
     if (!uid && !lineUid) {
@@ -142,7 +157,7 @@ const GroupBuyForm: React.FC = () => {
                             id="brand"
                             name="brand"
                             value={formData.brand}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             required
                         />
@@ -159,7 +174,7 @@ const GroupBuyForm: React.FC = () => {
                             id="product"
                             name="product"
                             value={formData.product}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             required
                         />
@@ -176,9 +191,10 @@ const GroupBuyForm: React.FC = () => {
                             id="price"
                             name="price"
                             value={formData.price}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             required
+                            min={1}
                         />
                     </div>
                     <div>
@@ -193,7 +209,7 @@ const GroupBuyForm: React.FC = () => {
                             id="url"
                             name="url"
                             value={formData.url}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             placeholder="https://www.example.com"
                         />
@@ -210,9 +226,10 @@ const GroupBuyForm: React.FC = () => {
                             id="threshold"
                             name="threshold"
                             value={formData.threshold}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             required
+                            min={1}
                         />
                     </div>
                     <div>
@@ -227,9 +244,10 @@ const GroupBuyForm: React.FC = () => {
                             id="currentTotal"
                             name="currentTotal"
                             value={formData.currentTotal}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             required
+                            min={1}
                         />
                     </div>
                     <div>
@@ -244,9 +262,10 @@ const GroupBuyForm: React.FC = () => {
                             id="difference"
                             name="difference"
                             value={formData.difference}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             required
+                            min={1}
                         />
                     </div>
                     <div>
@@ -258,10 +277,11 @@ const GroupBuyForm: React.FC = () => {
                         </label>
                         <input
                             type="datetime-local"
+                            min={getCurrentDateTime()}
                             id="closingDate"
                             name="closingDate"
                             value={formData.closingDate}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             required
                         />
@@ -278,7 +298,7 @@ const GroupBuyForm: React.FC = () => {
                             id="otherInfo"
                             name="otherInfo"
                             value={formData.otherInfo}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                             placeholder="最多200字"
                         />

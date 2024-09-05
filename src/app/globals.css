@@ -72,7 +72,8 @@ body {
 
 #group-buy-submit-btn,
 #group-buy-join-btn,
-#user-form-edit-btn {
+#user-form-edit-btn,
+#user-form-save-btn {
     margin-top: 40px;
 }
 #header-signin-btn,
