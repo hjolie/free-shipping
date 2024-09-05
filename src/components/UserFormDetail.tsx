@@ -296,10 +296,13 @@ const UserFormDetail: React.FC = () => {
                                         截止收單日：
                                     </h2>
                                     <p className="text-lg w-full p-2 rounded-md bg-gray-700 text-gray-200 border border-gray-600">
-                                        {originalValues.closingDate.replace(
-                                            "T",
-                                            "\u00a0\u00a0\u00a0"
-                                        ) + " 止"}
+                                        {typeof originalValues.closingDate ===
+                                        "string"
+                                            ? originalValues.closingDate.replace(
+                                                  "T",
+                                                  "\u00a0\u00a0\u00a0"
+                                              ) + " 止"
+                                            : originalValues.closingDate}
                                     </p>
                                 </div>
                                 <div>

@@ -117,14 +117,14 @@ const Buyers: React.FC = () => {
                         商品資訊
                     </h1>
                     <table className="min-w-full bg-gray-800 text-gray-300 mt-5 mb-5">
-                        <thead className="bg-gray-700 border-b border-gray-600">
+                        <thead className="border-b border-gray-600">
                             <tr className="font-semibold">
                                 <th className="py-3 px-4">品牌/商家</th>
                                 <th className="py-3 px-4">商品</th>
                                 <th className="py-3 px-4">價格</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="bg-gray-700">
                             <tr className="border-b border-gray-600">
                                 <td className="py-3 px-4">{brand}</td>
                                 <td className="py-3 px-4">{product}</td>
@@ -143,7 +143,7 @@ const Buyers: React.FC = () => {
                         免運進度
                     </h1>
                     <table className="min-w-full bg-gray-800 text-gray-300 mt-5">
-                        <thead className="bg-gray-700 border-b border-gray-600">
+                        <thead className="border-b border-gray-600">
                             <tr className="font-semibold">
                                 <th className="py-3 px-4">免運門檻</th>
                                 <th className="py-3 px-4">
@@ -152,7 +152,7 @@ const Buyers: React.FC = () => {
                                 <th className="py-3 px-4">免運差額</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="bg-gray-700">
                             <tr className="border-b border-gray-600">
                                 <td className="py-3 px-4">${threshold}</td>
                                 <td className="py-3 px-4">
@@ -169,7 +169,7 @@ const Buyers: React.FC = () => {
                         下單記錄
                     </h1>
                     <table className="min-w-full bg-gray-800 text-gray-300 mt-5 mb-10">
-                        <thead className="bg-gray-700 border-b border-gray-600">
+                        <thead className="border-b border-gray-600">
                             <tr className="font-semibold">
                                 <th className="py-3 px-4">姓名</th>
                                 <th className="py-3 px-4">數量</th>
@@ -177,7 +177,7 @@ const Buyers: React.FC = () => {
                                 <th className="py-3 px-4">小計</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="bg-gray-700">
                             {buyersData.map((data, index) => (
                                 <tr
                                     key={index}
