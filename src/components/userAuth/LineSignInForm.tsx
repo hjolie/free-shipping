@@ -1,10 +1,10 @@
 "use client";
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import lineSignIn from "@/utils/Line/lineSignIn";
 
-const LineSignIn = () => {
+const LineSignInForm = () => {
     const [imgSrc, setImgSrc] = useState("/line/btn_base.png");
     const router = useRouter();
 
@@ -32,7 +32,7 @@ const LineSignIn = () => {
         });
 
         try {
-            const res = await signIn("line", { redirect: false });
+            const res = await lineSignIn();
             if (res?.ok) {
                 toast.success("登入成功！");
                 router.replace("/form");
@@ -69,4 +69,4 @@ const LineSignIn = () => {
     );
 };
 
-export default LineSignIn;
+export default LineSignInForm;

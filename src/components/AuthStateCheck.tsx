@@ -1,6 +1,6 @@
 "use client";
 import { onAuthStateChanged } from "firebase/auth";
-import userAuth from "@/utils/userAuth";
+import firebaseAuth from "@/utils/FirebaseAuth/firebaseAuth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextType {
@@ -16,7 +16,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         // console.log("Running from AuthStateCheck");
-        const unsubscribe = onAuthStateChanged(userAuth, (user) => {
+        const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
             if (user) {
                 setUid(user.uid);
                 setEmail(user.email);

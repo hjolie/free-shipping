@@ -3,13 +3,11 @@ import React, { FC } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { signOut } from "firebase/auth";
-import userAuth from "@/utils/userAuth";
 import { useAuth } from "@/components/AuthStateCheck";
 import { useSession } from "next-auth/react";
-import { toast } from "sonner";
 import Image from "next/image";
-import LineSignOut from "./LineSignOut";
+import SignOutBtn from "./userAuth/SignOutBtn";
+import LineSignOutBtn from "./userAuth/LineSignOutBtn";
 
 const Header: FC = React.memo(() => {
     const [openHamMenu, setOpenHamMenu] = useState(false);
@@ -29,16 +27,6 @@ const Header: FC = React.memo(() => {
 
     const closeHamMenu = () => {
         setOpenHamMenu(false);
-    };
-
-    const handleSignOut = async () => {
-        try {
-            await signOut(userAuth);
-            toast.success("已登出！");
-            router.replace("/");
-        } catch (err) {
-            console.error("Error signing out: ", err);
-        }
     };
 
     return (
@@ -112,15 +100,9 @@ const Header: FC = React.memo(() => {
                             登入
                         </button>
                     ) : uid ? (
-                        <button
-                            onClick={handleSignOut}
-                            className="bg-teal-600 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
-                            id="header-signout-btn"
-                        >
-                            登出
-                        </button>
+                        <SignOutBtn id="header-signout-btn" />
                     ) : (
-                        <LineSignOut id="header-signout-btn" />
+                        <LineSignOutBtn id="header-signout-btn" />
                     )}
                 </div>
             </div>
@@ -228,18 +210,15 @@ const Header: FC = React.memo(() => {
                             登入
                         </button>
                     ) : uid ? (
-                        <button
-                            onClick={() => {
-                                handleSignOut();
-                                closeHamMenu();
-                            }}
-                            className="bg-teal-600 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
+                        <SignOutBtn
+                            closeHamMenu={closeHamMenu}
                             id="ham-signout-btn"
-                        >
-                            登出
-                        </button>
+                        />
                     ) : (
-                        <LineSignOut id="ham-signout-btn" />
+                        <LineSignOutBtn
+                            closeHamMenu={closeHamMenu}
+                            id="ham-signout-btn"
+                        />
                     )}
                 </div>
             </div>

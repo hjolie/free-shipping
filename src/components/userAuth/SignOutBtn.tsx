@@ -1,13 +1,19 @@
-import { signOut } from "next-auth/react";
+import firebaseSignOut from "@/utils/FirebaseAuth/signOut";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const LineSignOut = ({ id }: { id?: string }) => {
+const SignOutBtn = ({
+    id,
+    closeHamMenu,
+}: {
+    id?: string;
+    closeHamMenu?: () => void;
+}) => {
     const router = useRouter();
 
-    const handleLineSignOut = async () => {
+    const handleSignOut = async () => {
         try {
-            await signOut({ redirect: false });
+            await firebaseSignOut();
             toast.success("已登出！");
             router.replace("/");
         } catch (err) {
@@ -17,7 +23,10 @@ const LineSignOut = ({ id }: { id?: string }) => {
 
     return (
         <button
-            onClick={handleLineSignOut}
+            onClick={() => {
+                handleSignOut();
+                if (closeHamMenu) closeHamMenu();
+            }}
             className="bg-teal-600 text-white text-lg px-3 py-1 rounded-lg shadow-lg hover:bg-teal-700 hover:font-bold transition duration-300"
             id={id}
         >
@@ -26,4 +35,4 @@ const LineSignOut = ({ id }: { id?: string }) => {
     );
 };
 
-export default LineSignOut;
+export default SignOutBtn;
