@@ -1,36 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FREE-SHIPPING-GO
 
-## Getting Started
+### Group Buying Form Generator
 
-First, run the development server:
+#### Enjoy free delivery when inviting family or friends to buy together
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   A platform that allows you to generate a group buying form with a public link which can be sent to your family members, friends, or colleagues for buying a product together and targeting the free shipping threshold.
+-   Quick and simple steps to create a form.
+-   Easy and convenient to manage and view the buyers records in the user portal
+-   Save plenty of your time from looking for conversation history in LINE or other messaging apps.
+-   Built with React, Next.js and deployed on Vercel
+-   Utilized Firebase Authentication for email/password sign-in method
+-   Utilized Firestore Database for forms and buyers data storage
+-   Implemented OAuth by integrating Line Login through Auth.js Line Provider
