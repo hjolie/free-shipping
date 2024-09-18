@@ -13,13 +13,10 @@ FREE-SHIPPING-GO is a platform that allows you to easily generate a group buying
 -   **Effortless Management**: Easily view the buyer list and order history in the user dashboard.
 -   **Time-Saving**: Avoid scrolling through conversation history in LINE or other messaging apps.
 
-![](/readme/1-home.png | width=400)
 ![](/readme/2-form.png)
-![](/public/readme/1-home.png | width=400)
-![](/public/readme/2-form.png)
 
-<img src="/readme/1-home.png" width="400">
-<img src="/readme/2-form.png" width="400">
+<img src="/public/readme/1-home.png" width="400">
+<img src="/public/readme/2-form.png" width="400">
 
 ### **Built with Modern Technologies:**
 
@@ -36,8 +33,7 @@ FREE-SHIPPING-GO is a platform that allows you to easily generate a group buying
     1. Implemented a hamburger menu for easy navigation for mobile users.
     2. Enhanced user experience by using media queries and flexible layout functionalities in **Tailwind CSS**, ensuring smooth transitions across devices.
 
-<img src="/readme/3-login.png" width="400">
+<img src="/public/readme/3-login.png" width="400">
 
 <img src="/readme/4-home-mobile-ham.png" width="300">
 <img src="/readme/5-home-mobile-menu.png" width="300">
-<img src="https://your-image-url.type" width="100" height="100">
