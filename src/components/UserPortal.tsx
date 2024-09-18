@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/components/AuthStateCheck";
+import { useAuthContext } from "@/components/AuthStateCheck";
 import { useSession } from "next-auth/react";
 import db from "@/utils/db";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";
@@ -65,7 +65,7 @@ const UserPortal: React.FC = () => {
     const router = useRouter();
     const domainPrefixUrl = "https://free-shipping-go.vercel.app/form/detail/";
 
-    const { uid } = useAuth();
+    const { uid } = useAuthContext();
     const { data: session } = useSession();
     const lineUid = session?.user?.id;
 

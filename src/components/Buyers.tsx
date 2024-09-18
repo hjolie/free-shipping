@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/components/AuthStateCheck";
+import { useAuthContext } from "@/components/AuthStateCheck";
 import { useSession } from "next-auth/react";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";
 import db from "@/utils/db";
@@ -14,7 +14,7 @@ interface BuyersInfoType {
 }
 
 const Buyers: React.FC = () => {
-    const { uid } = useAuth();
+    const { uid } = useAuthContext();
     const { id } = useParams();
     const { data: session } = useSession();
     const lineUid = session?.user?.id;

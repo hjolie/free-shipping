@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useAuth } from "@/components/AuthStateCheck";
+import { useAuthContext } from "@/components/AuthStateCheck";
 import { useSession } from "next-auth/react";
 import { collection, addDoc } from "firebase/firestore/lite";
 import db from "@/utils/db";
@@ -35,7 +35,7 @@ const GroupBuyForm: React.FC = () => {
     const [formData, setFormData] = useState<GroupBuyFormType>(initialFormData);
     const router = useRouter();
 
-    const { uid } = useAuth();
+    const { uid } = useAuthContext();
 
     const { data: session } = useSession();
     const lineUid = session?.user?.id;

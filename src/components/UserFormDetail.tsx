@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/components/AuthStateCheck";
+import { useAuthContext } from "@/components/AuthStateCheck";
 import { useSession } from "next-auth/react";
 import {
     getDoc,
@@ -29,7 +29,7 @@ import { toast } from "sonner";
 // };
 
 const UserFormDetail: React.FC = () => {
-    const { uid } = useAuth();
+    const { uid } = useAuthContext();
     const { id } = useParams();
     const [loading, setLoading] = useState(true); //animation
     const router = useRouter();

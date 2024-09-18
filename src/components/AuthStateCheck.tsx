@@ -10,12 +10,11 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [uid, setUid] = useState<string | null>(null);
     const [email, setEmail] = useState<string | null>(null);
 
     useEffect(() => {
-        // console.log("Running from AuthStateCheck");
         const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
             if (user) {
                 setUid(user.uid);
@@ -36,12 +35,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-export const useAuth = (): AuthContextType => {
+export const useAuthContext = (): AuthContextType => {
     const context = useContext(AuthContext);
-    if (context === null) {
-        throw new Error("useAuth must be used within an AuthProvider");
+    if (!context) {
+        throw new Error(
+            "useAuthContext must be used within the AuthContextProvider"
+        );
     }
     return context;
 };
 
-export default AuthProvider;
+export default AuthContextProvider;

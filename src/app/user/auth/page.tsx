@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/components/AuthStateCheck";
+import { useAuthContext } from "@/components/AuthStateCheck";
 import { useSession } from "next-auth/react";
 import LineSignInForm from "@/components/userAuth/LineSignInForm";
 import SignInForm from "@/components/userAuth/SignInForm";
@@ -12,7 +12,7 @@ const UserAuthPage: React.FC = () => {
 
     const router = useRouter();
 
-    const { uid } = useAuth();
+    const { uid } = useAuthContext();
     const { data: session } = useSession();
     const lineUid = session?.user?.id;
 

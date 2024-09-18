@@ -3,7 +3,7 @@ import { Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AuthProvider from "@/components/AuthStateCheck";
+import AuthContextProvider from "@/components/AuthStateCheck";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="zh-Hant">
-            <AuthProvider>
+            <AuthContextProvider>
                 <SessionProvider>
                     <body className={notoSansTC.className}>
                         <Header />
@@ -45,7 +45,7 @@ export default function RootLayout({
                         />
                     </body>
                 </SessionProvider>
-            </AuthProvider>
+            </AuthContextProvider>
         </html>
     );
 }
