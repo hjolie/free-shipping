@@ -1,7 +1,7 @@
-import Buyers from "@/components/Buyers";
+import GroupBuyingSummary from "@/components/userPortal/GroupBuyingSummary";
 
-const BuyersPage = () => {
-    return <Buyers />;
+const GroupBuyingSummaryPage = () => {
+    return <GroupBuyingSummary />;
 };
 
-export default BuyersPage;
+export default GroupBuyingSummaryPage;

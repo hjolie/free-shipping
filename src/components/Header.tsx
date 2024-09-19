@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuthContext } from "@/components/AuthStateCheck";
+import useAuthContext from "@/hooks/useAuthContext";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import SignOutBtn from "./userAuth/SignOutBtn";

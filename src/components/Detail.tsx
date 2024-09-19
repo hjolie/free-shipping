@@ -4,18 +4,7 @@ import { useEffect, useState } from "react";
 import { getDoc, doc, collection, addDoc } from "firebase/firestore/lite";
 import db from "@/utils/db";
 import { toast } from "sonner";
-
-// const mockData = {
-//     brand: "佳德",
-//     product: "芋泥蛋黃酥",
-//     price: 55,
-//     url: "",
-//     threshold: 2000,
-//     currentTotal: 1500,
-//     difference: 500,
-//     closingDate: "",
-//     otherInfo: "",
-// };
+import useLoadingSpinner from "@/hooks/useLoadingSpinner";
 
 interface BuyerFormType {
     name: string;
@@ -31,18 +20,12 @@ const initialBuyerFormData: BuyerFormType = {
 
 const Detail: React.FC = () => {
     const { id } = useParams();
-    const [loading, setLoading] = useState(true); //animation
     const [groupBuyFormData, setGroupBuyFormData] = useState<any>(null);
     const [showBuyerForm, setShowBuyerForm] = useState(false);
     const [buyerFormData, setBuyerFormData] =
         useState<BuyerFormType>(initialBuyerFormData);
     const router = useRouter();
-
-    useEffect(() => {
-        // Loading Animation
-        const timer = setTimeout(() => setLoading(false), 2000);
-        return () => clearTimeout(timer);
-    }, []);
+    const { loading, spinner } = useLoadingSpinner();
 
     useEffect(() => {
         if (id) {
@@ -143,12 +126,7 @@ const Detail: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center px-4 py-40 space-y-12">
             {loading ? (
-                <div className="fixed inset-4 pt-80 flex flex-col items-center">
-                    <div className="loader"></div>
-                    <h1 className="text-xl font-bold text-gray-300 mt-6">
-                        載入中，請稍候...
-                    </h1>
-                </div>
+                spinner
             ) : (
                 <>
                     <div className="w-full max-w-2xl bg-gray-800 rounded-lg shadow-lg p-8">

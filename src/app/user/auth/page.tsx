@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/components/AuthStateCheck";
+import useAuthContext from "@/hooks/useAuthContext";
 import { useSession } from "next-auth/react";
 import LineSignInForm from "@/components/userAuth/LineSignInForm";
 import SignInForm from "@/components/userAuth/SignInForm";

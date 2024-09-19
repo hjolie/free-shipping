@@ -1,7 +1,7 @@
-import GroupBuyForm from "@/components/GroupBuyForm";
+import GroupBuyingForm from "@/components/GroupBuyingForm";
 
-const GroupBuyFormPage = () => {
-    return <GroupBuyForm />;
+const CreateFormPage = () => {
+    return <GroupBuyingForm />;
 };
 
-export default GroupBuyFormPage;
+export default CreateFormPage;

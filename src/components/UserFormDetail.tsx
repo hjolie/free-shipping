@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "@/components/AuthStateCheck";
+import useAuthContext from "@/hooks/useAuthContext";
 import { useSession } from "next-auth/react";
 import {
     getDoc,
@@ -15,23 +15,13 @@ import {
 } from "firebase/firestore/lite";
 import db from "@/utils/db";
 import { toast } from "sonner";
-
-// const data = {
-//     brand: "佳德",
-//     product: "芋泥蛋黃酥",
-//     price: 55,
-//     url: "",
-//     threshold: 2000,
-//     currentTotal: 1500,
-//     difference: 500,
-//     closingDate: "",
-//     otherInfo: "",
-// };
+import getCurrentDateTime from "@/utils/SharedFuncs/getCurrentDateTime";
+import useLoadingSpinner from "@/hooks/useLoadingSpinner";
 
 const UserFormDetail: React.FC = () => {
     const { uid } = useAuthContext();
     const { id } = useParams();
-    const [loading, setLoading] = useState(true); //animation
+
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
     const [originalValues, setOriginalValues] = useState<{
@@ -46,17 +36,13 @@ const UserFormDetail: React.FC = () => {
 
     let userId = uid ? uid : lineUid;
 
+    const { loading, spinner } = useLoadingSpinner();
+
     useEffect(() => {
         if (!uid && !lineUid) {
             router.replace("/user/auth");
         }
     }, [uid, session]);
-
-    useEffect(() => {
-        // Loading Animation
-        const timer = setTimeout(() => setLoading(false), 2000);
-        return () => clearTimeout(timer);
-    }, []);
 
     useEffect(() => {
         if (userId) {
@@ -213,20 +199,6 @@ const UserFormDetail: React.FC = () => {
         }
     };
 
-    const getCurrentDateTime = () => {
-        const currentDateTime = new Date();
-
-        currentDateTime.setHours(currentDateTime.getHours() + 1);
-
-        const year = currentDateTime.getFullYear();
-        const month = String(currentDateTime.getMonth() + 1).padStart(2, "0");
-        const day = String(currentDateTime.getDate()).padStart(2, "0");
-        const hours = String(currentDateTime.getHours()).padStart(2, "0");
-        const minutes = String(currentDateTime.getMinutes()).padStart(2, "0");
-
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
-    };
-
     if (!uid && !lineUid) {
         return null;
     }
@@ -234,12 +206,7 @@ const UserFormDetail: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center px-4 py-40 space-y-12">
             {loading ? (
-                <div className="fixed inset-4 pt-80 flex flex-col items-center">
-                    <div className="loader"></div>
-                    <h1 className="text-xl font-bold text-gray-300 mt-6">
-                        載入中，請稍候...
-                    </h1>
-                </div>
+                spinner
             ) : (
                 <>
                     {!isEditing ? (

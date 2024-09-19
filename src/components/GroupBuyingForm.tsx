@@ -1,25 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useAuthContext } from "@/components/AuthStateCheck";
+import useAuthContext from "@/hooks/useAuthContext";
 import { useSession } from "next-auth/react";
-import { collection, addDoc } from "firebase/firestore/lite";
-import db from "@/utils/db";
+import { CreateFormType } from "@/types/formTypes";
+import createForm from "@/utils/FirestoreDB/createForm";
+import getCurrentDateTime from "@/utils/SharedFuncs/getCurrentDateTime";
 import { toast } from "sonner";
 
-interface GroupBuyFormType {
-    brand: string;
-    product: string;
-    price: number;
-    url: string;
-    threshold: number;
-    currentTotal: number;
-    difference: number;
-    closingDate: string;
-    otherInfo: string;
-}
-
-const initialFormData: GroupBuyFormType = {
+const initialFormData: CreateFormType = {
     brand: "",
     product: "",
     price: 0,
@@ -31,15 +20,14 @@ const initialFormData: GroupBuyFormType = {
     otherInfo: "",
 };
 
-const GroupBuyForm: React.FC = () => {
-    const [formData, setFormData] = useState<GroupBuyFormType>(initialFormData);
+const GroupBuyingForm: React.FC = () => {
+    const [formData, setFormData] = useState<CreateFormType>(initialFormData);
     const router = useRouter();
 
     const { uid } = useAuthContext();
 
     const { data: session } = useSession();
     const lineUid = session?.user?.id;
-    // console.log(lineUid);
 
     let userId = uid ? uid : lineUid;
 
@@ -49,52 +37,34 @@ const GroupBuyForm: React.FC = () => {
         }
     }, [uid, session]);
 
-    // useEffect(() => {
-    //     if (!uid) {
-    //         router.replace("/user/auth");
-    //     }
-    // }, [uid]);
-
-    const createForm = async (
-        newFormData: GroupBuyFormType
-    ): Promise<string | null> => {
-        try {
-            const newDoc = await addDoc(collection(db, "forms"), {
-                ...newFormData,
-                uid: userId,
-            });
-
-            return newDoc.id;
-        } catch (err) {
-            console.error("Error adding new form to DB: ", err);
-            return null;
-        }
-    };
-
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const docId = await createForm(formData);
+        if (userId) {
+            const docId = await createForm(formData, userId);
 
-        if (docId) {
-            toast.success(
-                "團購單建立成功！即將導向團購單公開連結，可立即傳送給親友下單！",
-                {
-                    duration: 5000,
-                }
-            );
-            setFormData(initialFormData);
-            setTimeout(() => {
-                router.replace(`/form/detail/${docId}`);
-            }, 5500);
+            if (docId) {
+                toast.success(
+                    "團購單建立成功！即將導向團購單公開連結，可立即傳送給親友下單！",
+                    {
+                        duration: 5000,
+                    }
+                );
+                setFormData(initialFormData);
+                setTimeout(() => {
+                    router.replace(`/form/detail/${docId}`);
+                }, 5500);
+            } else {
+                console.error("Failed to retrieve the docId");
+                toast.error(
+                    "無法取得團購單公開連結，請另至「會員中心」取得該連結",
+                    {
+                        duration: 5000,
+                    }
+                );
+            }
         } else {
-            console.error("Failed to retrieve the docId");
-            toast.error(
-                "無法取得團購單公開連結，請另至「會員中心」取得該連結",
-                {
-                    duration: 5000,
-                }
-            );
+            console.error("User ID is undefined");
         }
     };
 
@@ -118,20 +88,6 @@ const GroupBuyForm: React.FC = () => {
             ...prevFormData,
             [name]: newValue,
         }));
-    };
-
-    const getCurrentDateTime = () => {
-        const currentDateTime = new Date();
-
-        currentDateTime.setHours(currentDateTime.getHours() + 1);
-
-        const year = currentDateTime.getFullYear();
-        const month = String(currentDateTime.getMonth() + 1).padStart(2, "0");
-        const day = String(currentDateTime.getDate()).padStart(2, "0");
-        const hours = String(currentDateTime.getHours()).padStart(2, "0");
-        const minutes = String(currentDateTime.getMinutes()).padStart(2, "0");
-
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
     if (!uid && !lineUid) {
@@ -316,4 +272,4 @@ const GroupBuyForm: React.FC = () => {
     );
 };
 
-export default GroupBuyForm;
+export default GroupBuyingForm;

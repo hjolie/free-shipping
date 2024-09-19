@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuthContext } from "@/components/AuthStateCheck";
+import useAuthContext from "@/hooks/useAuthContext";
 import { useSession } from "next-auth/react";
 import db from "@/utils/db";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";
@@ -15,49 +15,6 @@ interface GroupBuyInfoType {
     threshold: number;
     currentTotal: number;
 }
-
-// const forms: GroupBuyInfoType[] = [
-//     {
-//         formId: "1",
-//         brand: "Brand A",
-//         product: "Order A",
-//         price: 123,
-//         threshold: 321,
-//         currentTotal: 123,
-//     },
-//     {
-//         formId: "2",
-//         brand: "Brand B",
-//         product: "Order B",
-//         price: 123,
-//         threshold: 321,
-//         currentTotal: 123,
-//     },
-//     {
-//         formId: "3",
-//         brand: "Brand C",
-//         product: "Order C",
-//         price: 123,
-//         threshold: 321,
-//         currentTotal: 123,
-//     },
-//     {
-//         formId: "4",
-//         brand: "Brand D",
-//         product: "Order D",
-//         price: 123,
-//         threshold: 321,
-//         currentTotal: 123,
-//     },
-//     {
-//         formId: "5",
-//         brand: "Brand E",
-//         product: "Order E",
-//         price: 123,
-//         threshold: 321,
-//         currentTotal: 123,
-//     },
-// ];
 
 const UserPortal: React.FC = () => {
     const [groupBuyForms, setGroupBuyForms] = useState<GroupBuyInfoType[]>([]);
